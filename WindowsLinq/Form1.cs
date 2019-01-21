@@ -25,5 +25,17 @@ namespace WindowsLinq
             var q = from c in db.Customers  select new { c.CustomerID, c.CompanyName };
             dataGridView1.DataSource = q;
         }
+
+        private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            string cusId = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+            var order = from ord in db.Orders
+                        where ord.CustomerID == cusId
+                        select ord;
+            OrderGrid.DataSource = order;
+            int DetId = Convert.ToInt32(OrderGrid.CurrentRow.Cells[0].Value.ToString());
+            var detail = from det in db.Order_Details where det.OrderID == DetId select det;
+            OrderDetailGrid.DataSource = detail;
+        }
     }
 }
